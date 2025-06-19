@@ -63,4 +63,7 @@ func (s SlackNotifier) Notify(msg string) error {
 	fmt.Println("Sending Slack message:", msg)
 	return nil
 }
+func SendAlert(n Notifier) {
+	n.Notify("Server down")
+}
 ```
