@@ -91,4 +91,17 @@ func (s SlackNotifier) Notify(msg string) error {
 func SendAlert(n Notifier) {
 	n.Notify("Server down")
 }
+
+func main() {
+	var notifier Notifier
+
+	// Switch between notifiers without changing SendAlert
+	notifier = EmailNotifier{}
+	SendAlert(notifier)
+
+	notifier = SlackNotifier{}
+	SendAlert(notifier)
+}
 ```
+
+
