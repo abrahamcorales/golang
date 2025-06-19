@@ -16,19 +16,44 @@ In Go:
 ### 🧪 Example
 
 ```go
-type Logger struct{}
+package main
 
-func (l Logger) Log(msg string) {
-	fmt.Println(msg)
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+)
+
+// 1. Business logic only
+type Invoice struct {
+	ID     string
+	Amount float64
+	Tax    float64
 }
 
-type UserService struct {
-	logger Logger
+func (i *Invoice) Total() float64 {
+	return i.Amount * (1 + i.Tax)
 }
 
-func (u UserService) CreateUser(name string) {
-	// Logic for creating a user
-	u.logger.Log("User created: " + name)
+// 2. Separate component for saving
+type InvoiceSaver struct{}
+
+func (s InvoiceSaver) SaveToFile(i *Invoice, filename string) error {
+	data, err := json.Marshal(i)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(filename, data, 0644)
+}
+
+func main() {
+	inv := Invoice{ID: "INV-001", Amount: 100, Tax: 0.2}
+	fmt.Println("Total:", inv.Total())
+
+	saver := InvoiceSaver{}
+	if err := saver.SaveToFile(&inv, "invoice.json"); err != nil {
+		fmt.Println("Error saving invoice:", err)
+	}
 }
 ```
 ## ✅ 2. Open/Closed Principle (OCP)
