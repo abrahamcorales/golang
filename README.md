@@ -254,3 +254,14 @@ func main() {
 	service.GenerateReport()
 }
 ```
+
+## 🔍 Key Differences Between SOLID Principles in Go
+
+| Principle | Focus                    | Question it Answers                                              | Risk if Violated                                                                 |
+|-----------|--------------------------|------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| **SRP** (Single Responsibility) | Separation of concerns       | “Does this component do more than one thing?”                    | Code becomes harder to read, test, or change without side effects               |
+| **OCP** (Open/Closed)          | Extending functionality      | “How can I add a new behavior without changing existing code?”   | You end up rewriting stable code to add features                                |
+| **LSP** (Liskov Substitution) | Replacing implementation     | “Will my code still work if I swap one implementation for another?” | Replacements break existing logic or introduce bugs                             |
+| **ISP** (Interface Segregation) | Keeping interfaces focused    | “Am I forcing implementations to satisfy unused methods?”         | You couple components unnecessarily and reduce flexibility                      |
+| **DIP** (Dependency Inversion) | Decoupling modules           | “Is my high-level logic depending on low-level details?”          | Code becomes tightly coupled, hard to test, and inflexible to change            |
+
