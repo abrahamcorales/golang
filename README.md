@@ -103,5 +103,52 @@ func main() {
 	SendAlert(notifier)
 }
 ```
+## ✅ 4. Interface Segregation Principle (ISP)
+
+### 📖 Definition
+**Clients should not be forced to depend on interfaces they do not use.**  
+Instead of having large interfaces, split them into small, specific ones.
+
+---
+
+### 💡 How to apply it in Go
+
+Go naturally encourages small interfaces. You should:
+- ✅ Create minimal interfaces like `io.Reader`, `io.Writer`
+- ✅ Design by **capability** (e.g., if your function only needs `.Read()`, accept a `Reader`)
+- ❌ Avoid "God interfaces" that force implementations to satisfy unnecessary methods
+
+---
+
+### ✅ Example
+
+```go
+// Bad - Fat Interface
+type File interface {
+	Read([]byte) (int, error)
+	Write([]byte) (int, error)
+	Close() error
+}
+
+// Good - Segregated Interfaces
+type Reader interface {
+	Read([]byte) (int, error)
+}
+
+type Writer interface {
+	Write([]byte) (int, error)
+}
+
+type Closer interface {
+	Close() error
+}
+
+// Client that only needs to read
+func ProcessData(r Reader) {
+	buf := make([]byte, 100)
+	r.Read(buf)
+	fmt.Println("Read data")
+}
+```
 
 
