@@ -152,6 +152,7 @@ func main() {
 	n = SlackNotifier{}
 	SendSystemAlert(n)
 }
+```
 
 ## ✅ 4. Interface Segregation Principle (ISP)
 
