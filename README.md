@@ -103,6 +103,56 @@ func main() {
 	SendAlert(notifier)
 }
 ```
+## ✅ 3. Liskov Substitution Principle (LSP)
+
+### 📖 Definition
+**If type `S` is a subtype of type `T`, we should be able to substitute `T` with `S` without breaking the program.**  
+In Go, if a struct implements an interface, it must behave consistently with the expected contract.
+
+---
+
+### 💡 How to apply it in Go
+
+- ✅ Keep interfaces small and focused
+- ✅ Ensure implementations do not surprise the caller
+- ❌ Avoid side effects or unexpected behavior in concrete types
+
+---
+
+### ✅ Example
+
+```go
+type Notifier interface {
+	Notify(message string) error
+}
+
+type EmailNotifier struct{}
+func (e EmailNotifier) Notify(msg string) error {
+	fmt.Println("Email:", msg)
+	return nil
+}
+
+type SlackNotifier struct{}
+func (s SlackNotifier) Notify(msg string) error {
+	fmt.Println("Slack:", msg)
+	return nil
+}
+
+// This function should work with *any* Notifier
+func SendSystemAlert(n Notifier) {
+	n.Notify("System is down!")
+}
+
+func main() {
+	var n Notifier
+
+	n = EmailNotifier{}
+	SendSystemAlert(n)
+
+	n = SlackNotifier{}
+	SendSystemAlert(n)
+}
+
 ## ✅ 4. Interface Segregation Principle (ISP)
 
 ### 📖 Definition
@@ -151,4 +201,55 @@ func ProcessData(r Reader) {
 }
 ```
 
+## ✅ 5. Dependency Inversion Principle (DIP)
 
+### 📖 Definition
+**High-level code (like business logic) should depend on interfaces, not on specific implementations.**  
+We pass those implementations using constructors or struct fields (**dependency injection**).
+
+---
+
+### 💡 How to apply it in Go
+
+- ✅ Define interfaces at the consumer level (not in the low-level package)
+- ✅ Inject dependencies via constructors or struct fields
+- ✅ Decouple business logic from infrastructure concerns
+
+---
+
+### ✅ Example
+
+```go
+// Define the abstraction that high-level code depends on
+type Storage interface {
+	Save(data string) error
+}
+
+// Low-level implementation
+type FileStorage struct{}
+func (fs FileStorage) Save(data string) error {
+	fmt.Println("Saving to file:", data)
+	return nil
+}
+
+// High-level logic depends on the abstraction, not the concrete type
+type ReportService struct {
+	storage Storage
+}
+
+// Dependency is injected via constructor
+func NewReportService(s Storage) *ReportService {
+	return &ReportService{storage: s}
+}
+
+func (r *ReportService) GenerateReport() {
+	fmt.Println("Generating report...")
+	r.storage.Save("report content")
+}
+
+func main() {
+	fs := FileStorage{}
+	service := NewReportService(fs)
+	service.GenerateReport()
+}
+```
