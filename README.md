@@ -259,9 +259,37 @@ func main() {
 
 | Principle | Focus                    | Question it Answers                                              | Risk if Violated                                                                 |
 |-----------|--------------------------|------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| **SRP** (Single Responsibility) | Separation of concerns       | “Does this component do more than one thing?”                    | Code becomes harder to read, test, or change without side effects               |
-| **OCP** (Open/Closed)          | Extending functionality      | “How can I add a new behavior without changing existing code?”   | You end up rewriting stable code to add features                                |
-| **LSP** (Liskov Substitution) | Replacing implementation     | “Will my code still work if I swap one implementation for another?” | Replacements break existing logic or introduce bugs                             |
-| **ISP** (Interface Segregation) | Keeping interfaces focused    | “Am I forcing implementations to satisfy unused methods?”         | You couple components unnecessarily and reduce flexibility                      |
-| **DIP** (Dependency Inversion) | Decoupling modules           | “Is my high-level logic depending on low-level details?”          | Code becomes tightly coupled, hard to test, and inflexible to change            |
+| **SRP** (Single Responsibility) | Separation of concerns       | "Does this component do more than one thing?"                    | Code becomes harder to read, test, or change without side effects               |
+| **OCP** (Open/Closed)          | Extending functionality      | "How can I add a new behavior without changing existing code?"   | You end up rewriting stable code to add features                                |
+| **LSP** (Liskov Substitution) | Replacing implementation     | "Will my code still work if I swap one implementation for another?" | Replacements break existing logic or introduce bugs                             |
+| **ISP** (Interface Segregation) | Keeping interfaces focused    | "Am I forcing implementations to satisfy unused methods?"         | You couple components unnecessarily and reduce flexibility                      |
+| **DIP** (Dependency Inversion) | Decoupling modules           | "Is my high-level logic depending on low-level details?"          | Code becomes tightly coupled, hard to test, and inflexible to change            |
 
+
+# SOLID Principles vs Design Patterns
+
+| Name                          | Type        | Category              | Goal / Purpose                                                                 | Example Use Case                                        |
+|-------------------------------|-------------|------------------------|--------------------------------------------------------------------------------|----------------------------------------------------------|
+| **S**: Single Responsibility  | Principle   | SOLID (Class Design)  | A class should have only one reason to change                                  | Separate logging from business logic                     |
+| **O**: Open/Closed            | Principle   | SOLID (Extensibility) | Software entities should be open for extension, but closed for modification    | Use interfaces to allow new behaviors                    |
+| **L**: Liskov Substitution    | Principle   | SOLID (Inheritance)   | Derived classes must be substitutable for their base classes                   | Replace a parent class with any child without breaking   |
+| **I**: Interface Segregation  | Principle   | SOLID (Abstraction)   | Clients should not be forced to depend on interfaces they don't use            | Split large interfaces into smaller, role-based ones     |
+| **D**: Dependency Inversion   | Principle   | SOLID (Decoupling)    | Depend on abstractions, not concrete implementations                           | Inject services using interfaces                         |
+| **Factory**                   | Pattern     | Creational            | Encapsulate object creation logic                                              | Create `DatabaseClient` based on config                  |
+| **Singleton**                 | Pattern     | Creational            | Ensure a class has only one instance                                           | Centralized configuration loader                         |
+| **Builder**                   | Pattern     | Creational            | Construct complex objects step-by-step                                         | Fluent API to build a large struct                      |
+| **Strategy**                  | Pattern     | Behavioral            | Define a family of algorithms, encapsulate them, and make them interchangeable | Payment strategies: `PayPal`, `CreditCard`, etc.         |
+| **Observer**                  | Pattern     | Behavioral            | Notify multiple objects when state changes                                     | Event-driven systems, pub-sub                            |
+| **Decorator**                 | Pattern     | Structural            | Add responsibilities to objects dynamically                                    | Add logging or caching to an existing service            |
+| **Adapter**                   | Pattern     | Structural            | Make incompatible interfaces work together                                     | Wrap an old API to fit a new interface                   |
+| **Singleflight**              | Pattern     | Concurrency           | Prevent duplicate function calls for the same key                              | Deduplicate concurrent cache misses or HTTP requests     |
+| **Non-blocking Cache**        | Pattern     | Concurrency           | Return stale or default value while fresh data is recomputed asynchronously    | Improve responsiveness under high load                   |
+| **Fan-out / Parallelism**     | Pattern     | Concurrency           | Launch multiple workers in parallel to speed up batch processing               | Parallel API calls or I/O-heavy operations               |
+| **Worker Pool**               | Pattern     | Concurrency           | Limit concurrency by distributing work across a pool of fixed-size workers     | Limit DB access concurrency, bulk email sending          |
+| **Pipeline**                  | Pattern     | Concurrency           | Chain processing stages using channels                                         | ETL jobs, streaming data processing                      |
+| **Semaphore**                 | Pattern     | Concurrency           | Limit the number of concurrent goroutines                                      | Restrict simultaneous DB connections                     |
+| **Context Cancellation**      | Pattern     | Concurrency           | Propagate cancellation signals to goroutines                                   | Cancel HTTP requests, shutdown background jobs           |
+| **Ticker/Timer**              | Pattern     | Concurrency           | Schedule periodic or delayed tasks                                             | Heartbeats, scheduled cache refresh                      |
+| **Select Statement**          | Pattern     | Concurrency           | Multiplex channel operations, handle multiple events                           | Wait for multiple channel inputs or timeouts             |
+| **Future/Promise**            | Pattern     | Concurrency           | Represent a value that will be available in the future                         | Async computation results                                |
+| **Rate Limiter**              | Pattern     | Concurrency           | Control the rate of events or requests                                         | API request throttling                                   |
