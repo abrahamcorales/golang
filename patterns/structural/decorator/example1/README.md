@@ -52,3 +52,41 @@ func main() {
 ```
 
 This example shows how you can add Milk and Sugar to a Coffee dynamically, each time wrapping the previous object.
+
+### Exercise: Payment Card Features
+
+Create a Payment Card decorator system where you can add features dynamically.
+
+```go
+// TODO: Implement the following structure:
+
+// 1. Create a PaymentCard interface with methods:
+//    - GetAnnualFee() int
+//    - GetFeatures() string
+
+// 2. Create a BasicCard struct that implements PaymentCard
+//    - Annual Fee: 0
+//    - Features: "Basic Payment"
+
+// 3. Create a CardDecorator struct that embeds PaymentCard
+
+// 4. Create decorators for card features:
+//    - Rewards (fee: +50, features: ", Cashback Rewards")
+//    - Travel (fee: +100, features: ", Travel Insurance")
+//    - Premium (fee: +200, features: ", Premium Support")
+
+// 5. Test your implementation:
+//    - Start with BasicCard
+//    - Add Rewards
+//    - Add Travel
+//    - Add Premium
+//    - Print annual fee and features at each step
+```
+
+**Expected Output:**
+```
+Annual Fee: $0, Features: Basic Payment
+Annual Fee: $50, Features: Basic Payment, Cashback Rewards
+Annual Fee: $150, Features: Basic Payment, Cashback Rewards, Travel Insurance
+Annual Fee: $350, Features: Basic Payment, Cashback Rewards, Travel Insurance, Premium Support
+```

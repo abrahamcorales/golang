@@ -2,51 +2,132 @@ package main
 
 import "fmt"
 
-// Component
-type Coffee interface {
-	Cost() int
-	Ingredients() string
+// Component - Interface base
+type Text interface {
+	Display() string
 }
 
-// Concrete Component
-type SimpleCoffee struct{}
-
-func (s *SimpleCoffee) Cost() int {
-	return 5
-}
-func (s *SimpleCoffee) Ingredients() string {
-	return "Coffee"
+// Concrete Component - Implementación básica
+type SimpleText struct {
+	Content string
 }
 
-// Decorator Base
-type CoffeeDecorator struct {
-	Coffee
+func (s *SimpleText) Display() string {
+	return s.Content
 }
 
-// Concrete Decorators
-type Milk struct {
-	CoffeeDecorator
+// Decorator Base - Envuelve el componente
+type TextDecorator struct {
+	Text
 }
 
-func (m *Milk) Cost() int {
-	return m.Coffee.Cost() + 2
-}
-func (m *Milk) Ingredients() string {
-	return m.Coffee.Ingredients() + ", Milk"
+// Concrete Decorators - Agregan funcionalidad
+type BoldDecorator struct {
+	TextDecorator
 }
 
-type Sugar struct{ CoffeeDecorator }
+func (b *BoldDecorator) Display() string {
+	return "**" + b.Text.Display() + "**"
+}
 
-func (s *Sugar) Cost() int           { return s.Coffee.Cost() + 1 }
-func (s *Sugar) Ingredients() string { return s.Coffee.Ingredients() + ", Sugar" }
+type ItalicDecorator struct {
+	TextDecorator
+}
+
+func (i *ItalicDecorator) Display() string {
+	return "*" + i.Text.Display() + "*"
+}
+
+type UnderlineDecorator struct {
+	TextDecorator
+}
+
+func (u *UnderlineDecorator) Display() string {
+	return "__" + u.Text.Display() + "__"
+}
 
 func main() {
-	var c Coffee = &SimpleCoffee{}
-	fmt.Println(c.Cost(), c.Ingredients()) // 5 Coffee
+	// Texto básico
+	var text Text = &SimpleText{Content: "Hello World"}
+	fmt.Println("Original:", text.Display())
 
-	c = &Milk{CoffeeDecorator{c}}
-	fmt.Println(c.Cost(), c.Ingredients()) // 7 Coffee, Milk
+	// Agregar negrita
+	text = &BoldDecorator{TextDecorator{text}}
+	fmt.Println("Bold:", text.Display())
 
-	c = &Sugar{CoffeeDecorator{c}}
-	fmt.Println(c.Cost(), c.Ingredients()) // 8 Coffee, Milk, Sugar
+	// Agregar cursiva
+	text = &ItalicDecorator{TextDecorator{text}}
+	fmt.Println("Bold + Italic:", text.Display())
+
+	// Agregar subrayado
+	text = &UnderlineDecorator{TextDecorator{text}}
+	fmt.Println("Bold + Italic + Underline:", text.Display())
+
+	var sandwich Sandwich = &BasicSandwich{}
+	fmt.Println(sandwich.GetDescription()) // Bread
+
+	sandwich = &Lettuce{SandwichDecorator{sandwich}}
+	fmt.Println(sandwich.GetDescription()) // Bread, Lettuce
+
+	sandwich = &Tomato{SandwichDecorator{sandwich}}
+	fmt.Println(sandwich.GetDescription()) // Bread, Lettuce, Tomato
+
+}
+
+/*
+EJERCICIO: Sandwich Decorator
+
+Crea un sistema de decoradores para agregar ingredientes a un sandwich.
+
+TODO: Implementa lo siguiente:
+
+1. Crea una interfaz Sandwich con método:
+  - GetDescription() string
+
+2. Crea un componente concreto BasicSandwich:
+  - Descripción: "Bread"
+
+3. Crea un decorador base SandwichDecorator
+
+4. Crea decoradores concretos:
+  - Lettuce (descripción: ", Lettuce")
+  - Tomato (descripción: ", Tomato")
+  - Cheese (descripción: ", Cheese")
+
+5. Prueba agregando ingredientes uno por uno
+
+Salida esperada:
+Bread
+Bread, Lettuce
+Bread, Lettuce, Tomato
+Bread, Lettuce, Tomato, Cheese
+*/
+type Sandwich interface {
+	GetDescription() string
+}
+
+type BasicSandwich struct{}
+
+func (b *BasicSandwich) GetDescription() string {
+	return "Bread"
+}
+
+type SandwichDecorator struct {
+	Sandwich
+}
+
+type Lettuce struct {
+	SandwichDecorator
+}
+
+func (l *Lettuce) GetDescription() string {
+	return l.Sandwich.GetDescription() + ", Lettuce"
+}
+
+type Tomato struct {
+	SandwichDecorator
+}
+
+func (t *Tomato) GetDescription() string {
+	return t.Sandwich.GetDescription() + ", Tomato"
 }
